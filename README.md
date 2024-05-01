@@ -1,5 +1,5 @@
-IFOX Assembler used in MVS 3.8
-==============================
+FX (also known as IFOX) Assembler used in OS/VS, DOS, VM
+========================================================
 
 This is the assembler source code for the.... assembler.  
 
