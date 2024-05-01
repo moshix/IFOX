@@ -39,23 +39,38 @@ for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS
 About the IFOX Code
 ===================
 Here is a description of the function of the various source modules:
-•	ifox0a this module is the driver for the assembler. this module treats all other phases as subroutines.
-•	ifox0b this module is the workfile i/o package for the assembly. the
+* IFOX0A  
+This module is the driver for the assembler. this module treats all other phases as subroutines.
+*	IFOX0B  
+this module is the workfile i/o package for the assembly. the
 other phases interface with this module for all workfile i/o re-
 quests and core management
-•	ifox0c this module is the master common work area for the assembler. the module is mapped according to the jcommon dsect. the module is loaded by the driver and remains in core until the end of job. register 13 always points to to this module.
-•	ifox0d this module initializes the assembler. it formats the time, date and assembler level, checks for valid parameters, checks to see that all necessary dd cards are present, and sets the maximum workfile record size.
-•	ifox0e this module is the input common work area for the input i/o pack- age. the is load by the driver. register r7 points to this module while the input i/o package has control.
-•	ifox0f this module is the input i/o module for the assembler. it is used by the macro editor to read source input, copy code and macros.
-•	ifox0g this module is the output common work area for the output i/o package. this is loaded by the driver. register r7 points to this module while the input i/o package has control.
-•	ifox0h this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
-•	ifox0i this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
-•	ifox0j a table of parameter options for assembler xf. this table is referenced by the assembler xf initialization phase (ifox02).
+* IFOX0C  
+this module is the master common work area for the assembler. the module is mapped according to the jcommon dsect. the module is loaded by the driver and remains in core until the end of job. register 13 always points to to this module.
+* IFOX0D  
+this module initializes the assembler. it formats the time, date and assembler level, checks for valid parameters, checks to see that all necessary dd cards are present, and sets the maximum workfile record size.
+* IFOX0E  
+this module is the input common work area for the input i/o pack- age. the is load by the driver. register r7 points to this module while the input i/o package has control.
+* IFOX0F  
+this module is the input i/o module for the assembler. it is used by the macro editor to read source input, copy code and macros.
+* IFOX0G  
+this module is the output common work area for the output i/o package. this is loaded by the driver. register r7 points to this module while the input i/o package has control.
+* IFOX0H  
+this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
+* IFOX0I  
+this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
+* IFOX0J
+a table of parameter options for assembler xf.
+this table is referenced by the assembler xf initialization phase (ifox02).
 the parameter options are those which may be specified by the
 programmer in the 'parm' field of the 'exec' statement. this
-table also provides for a standard set of defaule parameters when none is specified.a standard version of this table is furnished with the assembler. however, the system programmer may reassemble this
-table and respecify other default options to meet the requirements of his installation. in addition, options may be 'fixed' to prevent their misuse. 'fixed' options should be avoided because they limit the programmer's prerogatives. they should be used
-only when their inverse function may cause incompatible
+table also provides for a standard set of defaule parameters when none
+is specified.a standard version of this table is furnished with the assembler.
+However, the system programmer may reassemble this
+table and respecify other default options to meet the requirements of his
+installation. In addition, options may be 'fixed' to prevent their misuse.
+'fixed' options should be avoided because they limit the programmer's prerogatives.
+They should be used only when their inverse function may cause incompatible
 installation procedures.
 
 ![image](https://github.com/moshix/IFOX/assets/18267370/fb17259a-a90e-43d9-af41-214886962561)
