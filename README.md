@@ -39,61 +39,27 @@ for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS
 About the IFOX Code
 ===================
 Here is a description of the function of the various source modules:
-* **IFOX0A**
-THIS MODULE IS THE DRIVER FOR THE ASSEMBLER.  THIS MODULE TREATS
-ALL OTHER PHASES AS SUBROUTINES.
-* **IFOX0B**
-THIS MODULE IS THE WORKFILE I/O PACKAGE FOR THE ASSEMBLY.  THE    
-OTHER PHASES INTERFACE WITH THIS MODULE FOR ALL WORKFILE I/O RE-  
-QUESTS AND CORE MANAGEMENT
-* **IFOX0C**
-THIS MODULE IS THE MASTER COMMON WORK AREA FOR THE ASSEMBLER.
-THE MODULE IS MAPPED ACCORDING TO THE JCOMMON DSECT.  THE MODULE
-IS LOADED BY THE DRIVER AND REMAINS IN CORE UNTIL THE END OF JOB.
-REGISTER 13 ALWAYS POINTS TO TO THIS MODULE.
-* **IFOX0D**
-THIS MODULE INITIALIZES THE ASSEMBLER.  IT FORMATS THE TIME,
-DATE AND ASSEMBLER LEVEL, CHECKS FOR VALID PARAMETERS, CHECKS TO
-SEE THAT ALL NECESSARY DD CARDS ARE PRESENT, AND SETS THE MAXIMUM
- WORKFILE RECORD SIZE.
-* **IFOX0E**
-THIS MODULE IS THE INPUT COMMON WORK AREA FOR THE INPUT I/O PACK-
-AGE.  THE IS LOAD BY THE DRIVER.  REGISTER R7 POINTS TO THIS
-MODULE WHILE THE INPUT I/O PACKAGE HAS CONTROL.
-* **IFOX0F**
-THIS MODULE IS THE INPUT I/O MODULE FOR THE ASSEMBLER.  IT IS
-USED BY THE MACRO EDITOR TO READ SOURCE INPUT, COPY CODE AND
-MACROS.
-* **IFOX0G**
-THIS MODULE IS THE OUTPUT COMMON WORK AREA FOR THE OUTPUT I/O
-PACKAGE.  THIS IS LOADED BY THE DRIVER.  REGISTER R7 POINTS TO
-THIS MODULE WHILE THE INPUT I/O PACKAGE HAS CONTROL.
-* **IFOX0H**
-THIS MODULE IS THE OUTPUT PACKAGE FOR THE ASSEMBLER.  THE OTHER
-PHASES INTERFACE WITH THIS MODULE BY USE OF THE JPRINT AND JPUNCH
-MACROS.
-* **IFOX0I**
-THIS MODULE IS CALLED WHEN AN IRRECOVERABLE ERROR EXISTS.  IT IS
- ENTERED FOR PERMANENT I/O ERRORS, MISSING DD CARDS (SYSPRINT,
-SYSUT1, SYSUT2, SYSUT3, SYSIN), INSUFFICIENT MEMORY AND CERTAIN
-PROGRAM LOGIC ERRORS.  THIS ROUTINE FREES ALL CORE, CLOSES ALL
-FILES, FREEPOOL AS NECESSARY, WRITES A MESSAGE TO THE OPERATOR
-AND DELETES ALL LOADED PHASES EXCEPT ITSELF AND COMMON.
-* **IFOX0J**
-A TABLE OF PARAMETER OPTIONS FOR ASSEMBLER XF.  THIS TABLE
-IS REFERENCED BY THE ASSEMBLER XF INITIALIZATION PHASE (IFOX02).  
-THE PARAMETER OPTIONS ARE THOSE WHICH MAY BE SPECIFIED BY THE  
-PROGRAMMER IN THE 'PARM' FIELD OF THE 'EXEC' STATEMENT.  THIS  
-TABLE ALSO PROVIDES FOR A STANDARD SET OF DEFAULE PARAMETERS WHEN 
-NONE IS SPECIFIED.                                            
-A STANDARD VERSION OF THIS TABLE IS FURNISHED WITH THE
-ASSEMBLER.  HOWEVER, THE SYSTEM PROGRAMMER MAY REASSEMBLE THIS  
-TABLE AND RESPECIFY OTHER DEFAULT OPTIONS TO MEET THE REQUIREMENTS
-OF HIS INSTALLATION.  IN ADDITION, OPTIONS MAY BE 'FIXED' TO
-PREVENT THEIR MISUSE.  'FIXED' OPTIONS SHOULD BE AVOIDED BECAUSE
-THEY LIMIT THE PROGRAMMER'S PREROGATIVES.  THEY SHOULD BE USED  
-ONLY WHEN THEIR INVERSE FUNCTION MAY CAUSE INCOMPATIBLE  
-INSTALLATION PROCEDURES.                                         
+•	ifox0a this module is the driver for the assembler. this module treats all other phases as subroutines.
+•	ifox0b this module is the workfile i/o package for the assembly. the
+other phases interface with this module for all workfile i/o re-
+quests and core management
+•	ifox0c this module is the master common work area for the assembler. the module is mapped according to the jcommon dsect. the module is loaded by the driver and remains in core until the end of job. register 13 always points to to this module.
+•	ifox0d this module initializes the assembler. it formats the time, date and assembler level, checks for valid parameters, checks to see that all necessary dd cards are present, and sets the maximum workfile record size.
+•	ifox0e this module is the input common work area for the input i/o pack- age. the is load by the driver. register r7 points to this module while the input i/o package has control.
+•	ifox0f this module is the input i/o module for the assembler. it is used by the macro editor to read source input, copy code and macros.
+•	ifox0g this module is the output common work area for the output i/o package. this is loaded by the driver. register r7 points to this module while the input i/o package has control.
+•	ifox0h this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
+•	ifox0i this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
+•	ifox0j a table of parameter options for assembler xf. this table is referenced by the assembler xf initialization phase (ifox02).
+the parameter options are those which may be specified by the
+programmer in the 'parm' field of the 'exec' statement. this
+table also provides for a standard set of defaule parameters when none is specified.a standard version of this table is furnished with the assembler. however, the system programmer may reassemble this
+table and respecify other default options to meet the requirements of his installation. in addition, options may be 'fixed' to prevent their misuse. 'fixed' options should be avoided because they limit the programmer's prerogatives. they should be used
+only when their inverse function may cause incompatible
+installation procedures.
+
+![image](https://github.com/moshix/IFOX/assets/18267370/fb17259a-a90e-43d9-af41-214886962561)
+                            
 
 
 Moshix  
