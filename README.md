@@ -36,5 +36,15 @@ Read this manual for a simple guide on how to use this new and user-friendly ass
 
 for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/
 
+About the IFOX Code
+===================
+Here is a description of the function of the various source modules:
+* IFOX0A
+THIS MODULE IS THE DRIVER FOR THE ASSEMBLER.  THIS MODULE TREATS 
+* IFOX0B
+THIS MODULE IS THE WORKFILE I/O PACKAGE FOR THE ASSEMBLY.  THE    
+OTHER PHASES INTERFACE WITH THIS MODULE FOR ALL WORKFILE I/O RE-  
+QUESTS AND CORE MANAGEMENT
+
 Moshix  
 May 1, 2024
