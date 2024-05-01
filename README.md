@@ -59,8 +59,8 @@ this module is the output common work area for the output i/o package. this is l
 this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
 * IFOX0I  
 this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
-* IFOX0J
-a table of parameter options for assembler xf.
+* IFOX0J  
+A table of parameter options for assembler xf.
 this table is referenced by the assembler xf initialization phase (ifox02).
 the parameter options are those which may be specified by the
 programmer in the 'parm' field of the 'exec' statement. this
