@@ -30,6 +30,8 @@ The XF assembler specifically
 =============================
 The primary benefits of Assembler XF were improved performance, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten!
 
+![Architecture of the XF Assembler](https://github.com/moshix/IFOX/blob/main/xfassembler.png)
+
 Read this manual for a simple guide on how to use this new and user-friendly assembler here: [http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/GC33-4021-1_OS_VS_Assembler_Programmers_Guide_May73.pdf](http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/GC33-4021-4_OS_VS_VM_370_Assembler_Programmers_Guide_Sep82.pdf)
 
 for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/
