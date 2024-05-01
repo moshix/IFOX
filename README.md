@@ -38,7 +38,7 @@ for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS
 
 About the IFOX Code
 ===================
-Here is a description of the function of the various source modules:
+Here is a description of the function of the various source modules:  
 * IFOX0A  
 This module is the driver for the assembler. this module treats all other phases as subroutines.
 *	IFOX0B  
@@ -72,6 +72,8 @@ installation. In addition, options may be 'fixed' to prevent their misuse.
 'fixed' options should be avoided because they limit the programmer's prerogatives.
 They should be used only when their inverse function may cause incompatible
 installation procedures.
+
+
 
 ![image](https://github.com/moshix/IFOX/assets/18267370/fb17259a-a90e-43d9-af41-214886962561)
                             
