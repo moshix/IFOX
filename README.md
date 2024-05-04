@@ -63,7 +63,7 @@ installation. In addition, options may be 'fixed' to prevent their misuse.
 They should be used only when their inverse function may cause incompatible
 installation procedures.
 
--> ![More about mainframe assemblers in this interesting read here: ](https://github.com/moshix/IFOX/blob/main/MTS_Assemblers_Sep1986.pdf)
+More about mainframe assemblers in this interesting read here: (https://github.com/moshix/IFOX/blob/main/MTS_Assemblers_Sep1986.pdf](https://github.com/moshix/IFOX/blob/main/MTS_Assemblers_Sep1986.pdf)
 
 Moshix  
 May 1, 2024
