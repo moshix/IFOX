@@ -17,7 +17,7 @@ Traditionally, the assembly process is described in two passes:
 * Pass 1: Determine the amount of object-code storage needed by each statement, adjust a “Location Counter” accordingly, and assign location values to symbols; note all external symbols.
 * Pass 2: Use the information collected in Pass 1 to generate object code.  
 
-The IFOX assembler is based on the earlier ASM E and F assemblers. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's Assembler Language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters: E meant a 32K-byte machine (14K bytes for the system, 16K bytes for applications); F meant 64K bytes (20K for the system), G 128K, and H 256K (56K for the system, 200 for applications like the assembler).
+The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's Assembler Language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters: E meant a 32K-byte machine (14K bytes for the system, 16K bytes for applications); F meant 64K bytes (20K for the system), G 128K, and H 256K (56K for the system, 200 for applications like the assembler).
 
 The first (“Pass A”) is called “Edit”: this converts the source program into an internal form more convenient for processing. A special kind of editing, “macro editing” converts macros into an internal form and also constructs macro dictionary descriptors that define the assembly-time storage layout for variable symbols. The fixed-size local dictionary descriptors for macros and for open code, and a global dictionary for global variable symbols, are constructed during this “editing” process.
 
@@ -28,7 +28,7 @@ The term “Generate” is used to describe the (“Pass B”) macro and conditi
 
 The XF assembler specifically 
 =============================
-Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. It was supplied with OS/VS 2 MVS, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with MVT. The primary benefits of Assembler XF are improved performance compared to ASMF, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten! The reson for the improved performance lies the advanced read-ahead feature of this assembler. 
+Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. It was supplied with OS/VS2 MVS, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with MVT. The primary benefits of Assembler XF are improved performance compared to ASM F, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten! The reson for the improved performance lies the advanced read-ahead feature of this assembler. 
 
 ![Architecture of the XF Assembler](https://github.com/moshix/IFOX/blob/main/xfassembler.png)
 
