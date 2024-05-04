@@ -39,28 +39,18 @@ for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS
 About the IFOX Code
 ===================
 Here is a description of the function of the various source modules:  
-* IFOX0A  
-This module is the driver for the assembler. this module treats all other phases as subroutines.
-*	IFOX0B  
-this module is the workfile i/o package for the assembly. the
+- IFOX0A : This module is the driver for the assembler. this module treats all other phases as subroutines.
+- IFOX0B : this module is the workfile i/o package for the assembly. the
 other phases interface with this module for all workfile i/o re-
 quests and core management
-* IFOX0C  
-this module is the master common work area for the assembler. the module is mapped according to the jcommon dsect. the module is loaded by the driver and remains in core until the end of job. register 13 always points to to this module.
-* IFOX0D  
-this module initializes the assembler. it formats the time, date and assembler level, checks for valid parameters, checks to see that all necessary dd cards are present, and sets the maximum workfile record size.
-* IFOX0E  
-this module is the input common work area for the input i/o pack- age. the is load by the driver. register r7 points to this module while the input i/o package has control.
-* IFOX0F  
-this module is the input i/o module for the assembler. it is used by the macro editor to read source input, copy code and macros.
-* IFOX0G  
-this module is the output common work area for the output i/o package. this is loaded by the driver. register r7 points to this module while the input i/o package has control.
-* IFOX0H  
-this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
-* IFOX0I  
-this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
-* IFOX0J  
-A table of parameter options for assembler xf.
+- IFOX0C : this module is the master common work area for the assembler. the module is mapped according to the jcommon dsect. the module is loaded by the driver and remains in core until the end of job. register 13 always points to to this module.
+- IFOX0D : this module initializes the assembler. it formats the time, date and assembler level, checks for valid parameters, checks to see that all necessary dd cards are present, and sets the maximum workfile record size.
+- IFOX0E : this module is the input common work area for the input i/o pack- age. the is load by the driver. register r7 points to this module while the input i/o package has control.
+- IFOX0F  : this module is the input i/o module for the assembler. it is used by the macro editor to read source input, copy code and macros.
+- IFOX0G  : this module is the output common work area for the output i/o package. this is loaded by the driver. register r7 points to this module while the input i/o package has control.
+- IFOX0H  : this module is the output package for the assembler. the other phases interface with this module by use of the jprint and jpunch macros.
+- IFOX0I  : this module is called when an irrecoverable error exists. it is entered for permanent i/o errors, missing dd cards (sysprint, sysut1, sysut2, sysut3, sysin), insufficient memory and certain program logic errors. this routine frees all core, closes all files, freepool as necessary, writes a message to the operator and deletes all loaded phases except itself and common.
+- IFOX0J  : A table of parameter options for assembler xf.
 this table is referenced by the assembler xf initialization phase (ifox02).
 the parameter options are those which may be specified by the
 programmer in the 'parm' field of the 'exec' statement. this
