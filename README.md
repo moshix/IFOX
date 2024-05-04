@@ -28,7 +28,7 @@ The term “Generate” is used to describe the (“Pass B”) macro and conditi
 
 The XF assembler specifically 
 =============================
-The primary benefits of Assembler XF are improved performance compared to ASMF, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten! The reson for the improved performance lies the advanced read-ahead feature of this assembler. 
+Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. The primary benefits of Assembler XF are improved performance compared to ASMF, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten! The reson for the improved performance lies the advanced read-ahead feature of this assembler. 
 
 ![Architecture of the XF Assembler](https://github.com/moshix/IFOX/blob/main/xfassembler.png)
 
