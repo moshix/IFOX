@@ -64,10 +64,5 @@ They should be used only when their inverse function may cause incompatible
 installation procedures.
 
 
-
-![image](https://github.com/moshix/IFOX/assets/18267370/fb17259a-a90e-43d9-af41-214886962561)
-                            
-
-
 Moshix  
 May 1, 2024
