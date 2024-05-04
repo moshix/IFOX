@@ -1,5 +1,5 @@
-The FX (aka IFOX) Assembler used in OS/VS, DOS, VM
-==================================================
+The FX (aka IFOX) Assembler used in OS/VS2 MVS, DOS, VM
+=======================================================
 
 This is the assembler source code for the.... assembler.  
 
