@@ -36,8 +36,8 @@ Read this manual for a simple guide on how to use this new and user-friendly ass
 
 for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/
 
-About the IFOX Code
-===================
+About the IFOX source code
+==========================
 Here is a description of the function of the various source modules:  
 - IFOX0A : This module is the driver for the assembler. this module treats all other phases as subroutines.
 - IFOX0B : this module is the workfile i/o package for the assembly. the
