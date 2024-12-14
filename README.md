@@ -27,7 +27,7 @@ From the ASMH assembler, IBM then begat the High Level Assembler, [HLASM](https:
   
 Making a pass
 =============
-An assembler makes a “pass” over the source program when the program to be assembled isread completely. A fundamental difference in the designs of ASMF and ASMH is the number of passes each takes to complete an assembly.
+An assembler makes a “pass” over the source program when the program to be assembled is read completely. A fundamental difference in the designs of ASMF and ASMH is the number of passes each takes to complete an assembly.
 * A “phase” is a subset of a pass, where different sets of instructions are loaded to process portions of the data created by previous phases. For example, an initial phase of Pass 1 might read the source program, identify the fields of each statement, compress them, and then write the results to auxiliary
 storage.
 * An “interlude” is a pass over some internal tables, and usually takes place between or after source “passes.” An example of interlude processing is the sorting and printing of cross references. (We also talk about a “postlude,” which is an interlude after the last pass.)
