@@ -7,12 +7,12 @@ This is the assembler source code for the.... assembler.
 
 Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Assembler F that includes the new System/370 architecture instructions. This version provides a common assembler for OS/VS, DOS/VS and VM systems. Other changes include relaxing restrictions on expressions and macro processing. Assembler XF requires a minimum partition/region size of 64 KB. Yes, that's asking a lot, but in the meantime there are now mainframes with up to 16TB of RAM, so 64KB for an assembler is not a totally crazy amount, in my opinion. 
 
-The history of mainframe assemblers
-===================================
+The history of IBM mainframe assemblers
+=======================================
 The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's Assembler Language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters: E meant a 32K-byte machine (14K bytes for the system, 16K bytes for applications); F meant 64K bytes (20K for the system), G 128K, and H 256K (56K for the system, 200 for applications like the assembler).
 
   
-Making a Pass
+Making a pass
 =============
 An assembler makes a “pass” over the source program when the program to be assembled isread completely. A fundamental difference in the designs of ASMF and ASMH is the number of passes each takes to complete an assembly.
 * A “phase” is a subset of a pass, where different sets of instructions are loaded to process portions of the data created by previous phases. For example, an initial phase of Pass 1 might read the source program, identify the fields of each statement, compress them, and then write the results to auxiliary
