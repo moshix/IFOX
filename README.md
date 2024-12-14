@@ -9,7 +9,7 @@ Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Asse
   
 Assembler XF requires a **minimum region size of 64 KB**. Yes, that's asking a lot, but in the meantime there are now mainframes with up to 16TB of RAM, so 64KB for an assembler is not a dingdong crazy amount, in my opinion, especially considering that the XF assembler still runs nicely on the latest z/OS versions, on z16 hardware. 
 
-Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. It was supplied to customers with OS/VS2 MVS 3.8, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with the MVT operating system. The primary benefits of Assembler XF are improved performance compared to ASMF, with some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten. The reson for the improved performance lies the advanced read-ahead feature of this assembler.
+Assembler XF was developed at the IBM lab in Lidingö, Sweden in the mid 1970s. It was the assembler supplied to customers with OS/VS2 MVS 3.8, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with the MVT operating system. The primary benefits of Assembler XF are improved performance compared to ASMF, with some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten. The reson for the greatly improved performance lies in the advanced read-ahead feature of this assembler.
 
 The history of IBM mainframe assemblers
 =======================================
