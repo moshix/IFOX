@@ -1,7 +1,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fmoshix%2FIFOX&count_bg=%2379C83D&title_bg=%23555555&icon=ibm.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
-The FX (aka IFOX) Assembler used in MVS 3.8, DOS, VM
-====================================================
+The FX (aka IFOX) Assembler used in MVS 3.8, DOS/VS, VM/370
+===========================================================
 
 This is the assembler source code for the.... assembler.  
 
@@ -10,6 +10,8 @@ Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Asse
 The history of IBM mainframe assemblers
 =======================================
 The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's Assembler Language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters: E meant a 32K-byte machine (14K bytes for the system, 16K bytes for applications); F meant 64K bytes (20K for the system), G 128K, and H 256K (56K for the system, 200 for applications like the assembler).
+
+MVS/SP, VM/SP and VSE used a later assembler, called ASMH for H sized machines. 
 
   
 Making a pass
