@@ -13,6 +13,7 @@ The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, bu
 
 MVS/SP, VM/SP and VSE used a later assembler, called ASMH for H sized machines. [Here](https://github.com/moshix/mvs/blob/9d625695c727f610f84cf7ccb3ebc28e3153633f/QUEENS_ASMH#L4) is a program written for AMSH.
 
+Quite a few after-market assemblers for the IBM mainframe were written by thid parties. Just a small sample of these would the the ASSIS assembler (also ASSIST for MS-DOS [here](https://github.com/moshix/mvs/blob/master/assist.exe) ), the [Waterloo ASMG](https://github.com/moshix/ASMG) assembler, the SLAC assembler and many, many more, including my own assmemblers written in REXX, bash and even in Go language.   
   
 Making a pass
 =============
