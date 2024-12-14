@@ -1,7 +1,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fmoshix%2FIFOX&count_bg=%2379C83D&title_bg=%23555555&icon=ibm.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
-The FX (aka IFOX) Assembler used in MVS 3.8, DOS/VS, VM/370
-===========================================================
+The IBM FX, or IFOX, Assembler used in MVS 3.8, DOS/VS, VM/370
+==============================================================
 
 This is the assembler source code for the.... assembler.  
 
