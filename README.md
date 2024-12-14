@@ -15,7 +15,7 @@ The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, bu
 - G for 128K
 - H for 256K (56K for the system, 200K for applications)
    
-[This](https://github.com/moshix/mvs/blob/master/WTOMOSHE.jcl) is a typical exmaple of a program written for the FX assembler. 
+[This](https://github.com/moshix/mvs/blob/master/WTOMOSHE.jcl) is a typical example of a program written for the FX assembler. 
 
 MVS/SP, VM/SP and VSE used a later assembler, called ASMH for H sized machines. [Here](https://github.com/moshix/mvs/blob/9d625695c727f610f84cf7ccb3ebc28e3153633f/QUEENS_ASMH#L4) is a program written for AMSH.
 
