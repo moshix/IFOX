@@ -23,7 +23,7 @@ The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, bu
 
 MVS/SP, VM/SP and VSE used a later assembler, called ASMH for H sized machines. [Here](https://github.com/moshix/mvs/blob/9d625695c727f610f84cf7ccb3ebc28e3153633f/QUEENS_ASMH#L4) is a program written for AMSH.
 
-Quite a few after-market assemblers for the IBM mainframe were written by thid parties. Just a small sample of these would the the [ASSIST assembler](https://faculty.cs.niu.edu/~byrnes/csci360/ho/asusergd.shtml) (also ASSIST for MS-DOS [here](https://github.com/moshix/mvs/blob/master/assist.exe) ), the [Waterloo ASMG](https://github.com/moshix/ASMG) assembler, the [SLAC assembler mods](https://www.gsf-soft.com/Documents/SLAC-MODS.html)  and many, many more, including my own assemblers written in REXX, C, Python, bash and even in Go language.   
+Quite a few after-market assemblers for the IBM mainframe were written by thid parties. Just a small sample of these would the the [ASSIST assembler](https://faculty.cs.niu.edu/~byrnes/csci360/ho/asusergd.shtml) (also ASSIST for MS-DOS [here](https://github.com/moshix/mvs/blob/master/assist.exe) ), the [Waterloo ASMG](https://github.com/moshix/ASMG) assembler, the [SLAC assembler mods](https://www.gsf-soft.com/Documents/SLAC-MODS.html)  and many, many more, including my own assemblers written in REXX, C, Python, GO, and in bash shell script.   
 
 From the ASMH assembler, IBM then begat the High Level Assembler, [HLASM](https://www.ibm.com/products/high-level-assembler-and-toolkit-feature). And that's where we still are today. I doubt IBM will release new mainframe assemblers in the future, though, as the mainframe is slowly, but surely going extinct. And this is why this repository exists. 
   
