@@ -9,6 +9,8 @@ Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Asse
   
 Assembler XF requires a **minimum region size of 64 KB**. Yes, that's asking a lot, but in the meantime there are now mainframes with up to 16TB of RAM, so 64KB for an assembler is not a dingdong crazy amount, in my opinion, especially considering that the XF assembler still runs nicely on the latest z/OS versions, on z16 hardware. 
 
+Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. It was supplied to customers with OS/VS2 MVS 3.8, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with the MVT operating system. The primary benefits of Assembler XF are improved performance compared to ASMF, with some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten. The reson for the improved performance lies the advanced read-ahead feature of this assembler.
+
 The history of IBM mainframe assemblers
 =======================================
 The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's assembler language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters:  
@@ -44,16 +46,11 @@ In addition to the dictionaries, the assembler must build a “symbol table” o
 
 The term “Generate” is used to describe the (“Pass B”) macro and conditional assembly activity that substitutes macro-generated statements for the occurrence of a macro name in the source program.
 
-
-The XF assembler
-================
-Assembler XF was developed at the IBM lab in Lidingo, Sweden in the mid 1970s. It was supplied with OS/VS2 MVS, as well as with VM/370 and DOS/VS. It was a complete re-write of the Assembler F which came with MVT. The primary benefits of Assembler XF are improved performance compared to ASM F, and some language enhancements made at the same time. The assembler manuals were completely and elegantly rewritten! The reson for the improved performance lies the advanced read-ahead feature of this assembler. 
-
 ![Architecture of the XF Assembler](https://github.com/moshix/IFOX/blob/main/xfassembler.png)
 
 Read this manual for a simple guide on how to use this new and user-friendly assembler here: [http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/GC33-4021-1_OS_VS_Assembler_Programmers_Guide_May73.pdf](http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/GC33-4021-4_OS_VS_VM_370_Assembler_Programmers_Guide_Sep82.pdf)
 
-for the whole manual collection go here: http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/
+For the whole manual collection go [here](http://www.bitsavers.org/pdf/ibm/370/OS_VS/assembler/).
 
 About the IFOX source code
 ==========================
