@@ -5,7 +5,7 @@ The IBM FX, or IFOX, assembler used in MVS 3.8, DOS/VS, VM/370
 
 This is the assembler source code for the.... assembler.  
 
-Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Assembler F that includes the new System/370 architecture instructions. This version provides a common assembler for OS/VS, DOS/VS and VM systems. Other changes include relaxing restrictions on expressions and macro processing.  
+Assembler XF, also called IFOX assembler, is a mostly compatible upgrade of Assembler F that includes the new System/370 architecture instructions. This version provides a common assembler for OS/VS, DOS/VS and VM systems. Other changes include relaxing restrictions on expressions and macro processing.      
 Assembler XF requires a **minimum partition/region size of 64 KB**. Yes, that's asking a lot, but in the meantime there are now mainframes with up to 16TB of RAM, so 64KB for an assembler is not a totally crazy amount, in my opinion, especially considering that the XF assembler still runs nicely on the latest z/OS versions.
 
 The history of IBM mainframe assemblers
