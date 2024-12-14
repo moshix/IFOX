@@ -11,7 +11,7 @@ Assembler XF requires a **minimum region size of 64 KB**. Yes, that's asking a l
 
 The history of IBM mainframe assemblers
 =======================================
-The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's Assembler Language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters:  
+The IFOX assembler is based on the earlier ASM E and F assemblers, in syntax, but it is a complete rewrite. These assemblers were constrained by the small size of early System/360 processors, and many features (and limitations) of today's assembler language can be traced to the original design of ASME and ASMF. The memory sizes of System/360 machines was specified with letters:  
 - E for a 32K-byte machine (14K bytes for the system, 16K bytes for applications)
 - F for 64K bytes (20K for the system) 
 - G for 128K
