@@ -25,7 +25,7 @@ MVS/SP, VM/SP and VSE used a later assembler, called ASMH for H sized machines. 
 
 Quite a few after-market assemblers for the IBM mainframe were written by thid parties. Just a small sample of these would the the [ASSIST assembler](https://faculty.cs.niu.edu/~byrnes/csci360/ho/asusergd.shtml) (also ASSIST for MS-DOS [here](https://github.com/moshix/mvs/blob/master/assist.exe) ), the [Waterloo ASMG](https://github.com/moshix/ASMG) assembler, the [SLAC assembler mods](https://www.gsf-soft.com/Documents/SLAC-MODS.html)  and many, many more, including my own assemblers written in REXX, C, Python, GO, and in bash shell script.   
 
-From the ASMH assembler, IBM then begat the High Level Assembler, [HLASM](https://www.ibm.com/products/high-level-assembler-and-toolkit-feature). Here is a [nice video](https://youtu.be/ESjOPKt9fHw?si=FhpggmWq7C7mwI6r) introducing the HLASM assembler by one of its creators. And that's where we still are today. I doubt IBM will release new mainframe assemblers in the future, though, as the mainframe is slowly, but surely going extinct. And this is why this repository exists. 
+From the ASMH assembler, IBM then begat the High Level Assembler, [HLASM](https://www.ibm.com/products/high-level-assembler-and-toolkit-feature). [Here is a nice video](https://youtu.be/ESjOPKt9fHw?si=FhpggmWq7C7mwI6r) introducing the HLASM assembler by one of its creators. And that's where we still are today. I doubt IBM will release new mainframe assemblers in the future, though, as the mainframe is slowly, but surely going extinct. And this is why this repository exists. 
   
 Making a pass
 =============
