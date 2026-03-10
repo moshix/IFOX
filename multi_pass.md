@@ -53,39 +53,38 @@ flowchart LR
 
 In the 1970s, mainframe memory was tiny (often 64K–256K bytes). You could not hold a full program and all its tables in memory at once. The solution: **process the source in several passes**, each doing one job and writing intermediate results to disk.
 
-```
-+-----------------------------------------------------------------------------+
-|  1970s CONSTRAINT: Limited Memory                                           |
-+-----------------------------------------------------------------------------+
-|  * System/360 "F" machine = 64K total (20K for OS, ~44K for programs)       |
-|  * Assembler must fit in memory AND process large source files              |
-|  * Solution: Read source once per pass, write to workfiles (SYSUT1-3)        |
-|  * Each phase loads, runs, then is DELETED to free memory for the next      |
-+-----------------------------------------------------------------------------+
-```
+<div style="border:1px solid #616161;padding:12px;margin:12px 0;background:#fafafa;font-family:monospace;">
+<strong>1970s CONSTRAINT: Limited Memory</strong>
+<ul style="margin:8px 0 0 0;">
+<li>System/360 "F" machine = 64K total (20K for OS, ~44K for programs)</li>
+<li>Assembler must fit in memory AND process large source files</li>
+<li>Solution: Read source once per pass, write to workfiles (SYSUT1-3)</li>
+<li>Each phase loads, runs, then is DELETED to free memory for the next</li>
+</ul>
+</div>
 
 ### The IFOX Phase Flow
 
 IFOX uses **phases** (subroutines loaded one at a time) instead of a single monolithic program:
 
-```
-+-------------------------------------------------------------------------------+
-|  IFOX DRIVER (stays in memory)                                                |
-+-------------------------------------------------------------------------------+
-         |
-         |  LOAD -> RUN -> DELETE (free memory) -> LOAD next...
-         v
-+--------+   +--------+   +--------+   +--------+   +--------+   +--------+
-|  EDIT  | ->|  DICT  | ->|  GEN   | ->| SYMBOL | ->| OUTPUT | ->|  RLD & |
-|  (X11) |   |  RES.  |   | (X31)  |   |  RES.  |   | LISTER |   |  XREF  |
-|        |   | (X21)  |   |        |   |(X41/42)|   | (X51)  |   | (X61)  |
-+--------+   +--------+   +--------+   +--------+   +--------+   +--------+
-     |             |             |
-     v             v             v
-+-------------------------------------------------------------------------------+
-|  WORKFILES (SYSUT1, SYSUT2, SYSUT3) - intermediate data between phases       |
-+-------------------------------------------------------------------------------+
-```
+<div style="border:1px solid #2e7d32;padding:16px;margin:12px 0;background:#e8f5e9;">
+<div style="text-align:center;font-weight:bold;margin-bottom:12px;">IFOX DRIVER (stays in memory)</div>
+<div style="text-align:center;margin-bottom:12px;">LOAD → RUN → DELETE (free memory) → LOAD next...</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0;">
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">EDIT (X11)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">DICT RES. (X21)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">GEN (X31)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">SYMBOL RES. (X41/42)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">OUTPUT LISTER (X51)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #1565c0;padding:8px 12px;background:#e3f2fd;">RLD & XREF (X61)</span>
+</div>
+<div style="border:1px solid #616161;padding:8px;margin-top:12px;background:#f5f5f5;text-align:center;">WORKFILES (SYSUT1, SYSUT2, SYSUT3) — intermediate data between phases</div>
+</div>
 
 **Pass A (Edit + Generate):** Read source, expand macros, build symbol tables.  
 **Pass B (Dictionary + Generator):** Resolve symbols, generate object code.  
@@ -99,96 +98,87 @@ The assembler writes a **relocatable object module**: machine code plus metadata
 
 ### Object Module Structure (80-byte card format)
 
-```
-+-----------------------------------------------------------------------------+
-|  OBJECT MODULE = sequence of 80-byte records (like punched cards)          |
-+-----------------------------------------------------------------------------+
+<div style="border:1px solid #616161;padding:8px;margin:12px 0;background:#fafafa;">
+<div style="text-align:center;font-weight:bold;">OBJECT MODULE = sequence of 80-byte records (like punched cards)</div>
+</div>
 
-+------------------------------------------------------------------------------+
-|  ESD (External Symbol Dictionary)  - MUST COME FIRST                         |
-|  +-----------------------------------------------------------------------+   |
-|  |  Who is defined here?  What do we need from elsewhere?                |   |
-|  |  SD=Section, LD=Label/Entry, ER=External Ref, PR=Pseudo-Register       |   |
-|  +-----------------------------------------------------------------------+   |
-+------------------------------------------------------------------------------+
-                                    |
-                                    v
-+------------------------------------------------------------------------------+
-|  TXT (Text) - Machine code and data                                          |
-|  +-----------------------------------------------------------------------+   |
-|  |  Actual bytes to load.  Addresses are RELATIVE (not final).            |   |
-|  +-----------------------------------------------------------------------+   |
-+------------------------------------------------------------------------------+
-                                    |
-                                    v
-+------------------------------------------------------------------------------+
-|  RLD (Relocation & Linkage Dictionary) - Where to fix addresses             |
-|  +-----------------------------------------------------------------------+   |
-|  |  "At offset X in section Y, put the address of symbol Z"               |   |
-|  +-----------------------------------------------------------------------+   |
-+------------------------------------------------------------------------------+
-                                    |
-                                    v
-+------------------------------------------------------------------------------+
-|  END - End of module                                                         |
-+------------------------------------------------------------------------------+
-```
+<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
+<div style="font-weight:bold;margin-bottom:8px;">ESD (External Symbol Dictionary) — MUST COME FIRST</div>
+<div style="border:1px solid #e65100;padding:10px;margin:8px 0;background:#fff;">
+Who is defined here? What do we need from elsewhere?<br>
+SD=Section, LD=Label/Entry, ER=External Ref, PR=Pseudo-Register
+</div>
+</div>
+<div style="text-align:center;margin:4px 0;">↓</div>
+
+<div style="border:2px solid #6a1b9a;padding:12px;margin:12px 0;background:#f3e5f5;">
+<div style="font-weight:bold;margin-bottom:8px;">TXT (Text) — Machine code and data</div>
+<div style="border:1px solid #6a1b9a;padding:10px;margin:8px 0;background:#fff;">
+Actual bytes to load. Addresses are RELATIVE (not final).
+</div>
+</div>
+<div style="text-align:center;margin:4px 0;">↓</div>
+
+<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
+<div style="font-weight:bold;margin-bottom:8px;">RLD (Relocation & Linkage Dictionary) — Where to fix addresses</div>
+<div style="border:1px solid #e65100;padding:10px;margin:8px 0;background:#fff;">
+"At offset X in section Y, put the address of symbol Z"
+</div>
+</div>
+<div style="text-align:center;margin:4px 0;">↓</div>
+
+<div style="border:1px solid #616161;padding:8px;margin:12px 0;background:#f5f5f5;text-align:center;">
+<strong>END</strong> — End of module
+</div>
 
 ### ESD: The "Phone Book" of Symbols
 
-```
-+-----------------------------------------------------------------------------+
-|  ESD = External Symbol Dictionary                                            |
-|  Answers: "What symbols does this module define? What does it need?"         |
-+-----------------------------------------------------------------------------+
-
-  TYPE    MEANING                    EXAMPLE
-  -------------------------------------------------------------------------------
-  SD      Section Definition         "MYCODE" is a 100-byte code section
-  LD      Label Definition           "START" is an entry point at offset 0
-  ER      External Reference         "PRINT" is defined somewhere else
-  PR      Pseudo-Register (XD)       "BUF" is a dummy section for addressing
-```
+<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
+<div style="font-weight:bold;">ESD = External Symbol Dictionary</div>
+<div style="margin-bottom:12px;">Answers: "What symbols does this module define? What does it need?"</div>
+<table style="width:100%;border-collapse:collapse;">
+<tr style="background:#e65100;color:white;"><th style="padding:8px;text-align:left;">TYPE</th><th style="padding:8px;text-align:left;">MEANING</th><th style="padding:8px;text-align:left;">EXAMPLE</th></tr>
+<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">SD</td><td style="padding:8px;">Section Definition</td><td style="padding:8px;">"MYCODE" is a 100-byte code section</td></tr>
+<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">LD</td><td style="padding:8px;">Label Definition</td><td style="padding:8px;">"START" is an entry point at offset 0</td></tr>
+<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">ER</td><td style="padding:8px;">External Reference</td><td style="padding:8px;">"PRINT" is defined somewhere else</td></tr>
+<tr><td style="padding:8px;">PR</td><td style="padding:8px;">Pseudo-Register (XD)</td><td style="padding:8px;">"BUF" is a dummy section for addressing</td></tr>
+</table>
+</div>
 
 ### RLD: The "Fix-Up List"
 
 The assembler does **not** know final addresses. It emits **placeholders** and records where they are:
 
-```
-+-----------------------------------------------------------------------------+
-|  RLD = Relocation & Linkage Dictionary                                       |
-|  Each RLD entry says: "At this location, put the address of that symbol"     |
-+-----------------------------------------------------------------------------+
-
-  Source:     E    DC    A(EXTERNAL+4)     <- Address constant, value unknown
-                    |
-                    v
-  RLD entry:  R=EXTERNAL's ESDID, P=this section, Address=offset, Length=4, Type=A
-
-  When the LINKAGE EDITOR runs:
-    1. It knows where EXTERNAL ended up (from ESD of another module)
-    2. It finds the TXT byte at the given offset
-    3. It REPLACES the placeholder with the real address
-```
+<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
+<div style="font-weight:bold;">RLD = Relocation & Linkage Dictionary</div>
+<div style="margin-bottom:12px;">Each RLD entry says: "At this location, put the address of that symbol"</div>
+<div style="font-family:monospace;margin:8px 0;">Source: &nbsp;&nbsp;&nbsp;E &nbsp;&nbsp;DC &nbsp;&nbsp;A(EXTERNAL+4) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Address constant, value unknown</div>
+<div style="text-align:center;margin:4px 0;">↓</div>
+<div style="font-family:monospace;margin:8px 0;">RLD entry: R=EXTERNAL's ESDID, P=this section, Address=offset, Length=4, Type=A</div>
+<div style="margin-top:12px;padding:8px;background:#fff;border:1px solid #e65100;">
+<strong>When the LINKAGE EDITOR runs:</strong>
+<ol style="margin:4px 0 0 0;">
+<li>It knows where EXTERNAL ended up (from ESD of another module)</li>
+<li>It finds the TXT byte at the given offset</li>
+<li>It REPLACES the placeholder with the real address</li>
+</ol>
+</div>
+</div>
 
 ### How RLD Adjusts Displacements
 
-```
-  BEFORE LINK (in object module):
-  +-----------------------------------------------------------------+
-  |  TXT:  [instruction] [????] [instruction] ...                  |
-  |                    ^                                            |
-  |                    placeholder (e.g. 0 or relative value)         |
-  |                    RLD says: "Put address of FOO here"          |
-  +-----------------------------------------------------------------+
-
-  AFTER LINK (linkage editor applies RLD):
-  +-----------------------------------------------------------------+
-  |  TXT:  [instruction] [0x00012345] [instruction] ...            |
-  |                    ^                                             |
-  |                    real address where FOO was placed             |
-  +-----------------------------------------------------------------+
-```
+<div style="display:flex;flex-wrap:wrap;gap:24px;margin:12px 0;">
+<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
+<div style="font-weight:bold;margin-bottom:8px;">BEFORE LINK (in object module)</div>
+<div style="font-family:monospace;">TXT: [instruction] [????] [instruction] ...</div>
+<div style="font-size:0.9em;margin-top:8px;">↑ placeholder (e.g. 0 or relative value)<br>RLD says: "Put address of FOO here"</div>
+</div>
+<div style="flex:1;min-width:200px;border:2px solid #2e7d32;padding:12px;background:#e8f5e9;">
+<div style="font-weight:bold;margin-bottom:8px;">AFTER LINK (linkage editor applies RLD)</div>
+<div style="font-family:monospace;">TXT: [instruction] [0x00012345] [instruction] ...</div>
+<div style="font-size:0.9em;margin-top:8px;">↑ real address where FOO was placed</div>
+</div>
+</div>
 
 ---
 
@@ -232,53 +222,71 @@ flowchart TB
 
 ### How They Use Each Other's Output
 
-```
-+-------------+         +---------------------+         +-------------+
-|  ASSEMBLER  |         |  LINKAGE EDITOR     |         |   LOADER   |
-+------+------+         +----------+----------+         +------+-----+
-       |                           |                           |
-       |  ESD: "I define FOO,      |  Uses ESD to:              |  Uses load
-       |        I need BAR"         |  * Match BAR to its def   |  module to:
-       |                            |  * Assign addresses       |  * Copy code
-       |  TXT: code + placeholders  |  * Resolve all refs       |  * Relocate
-       |                            |                           |  * Start PC
-       |  RLD: "fix offset 12       |  Produces:                 |
-       |        with address of     |  * Single executable      |
-       |        BAR"                |  * All refs resolved      |
-       |                            |                           |
-       v                            v                           v
-+-------------+         +---------------------+         +-------------+
-| Object      |   -->   | Load Module          |   -->   | Program     |
-| Module(s)   |         | (ready to run)       |         | in Memory   |
-+-------------+         +---------------------+         +-------------+
-```
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin:12px 0;align-items:flex-start;">
+<div style="border:2px solid #1565c0;padding:12px;background:#e3f2fd;flex:1;min-width:140px;">
+<div style="font-weight:bold;text-align:center;">ASSEMBLER</div>
+<div style="font-size:0.9em;margin-top:8px;">
+ESD: "I define FOO, I need BAR"<br>
+TXT: code + placeholders<br>
+RLD: "fix offset 12 with address of BAR"
+</div>
+</div>
+<div style="border:2px solid #e65100;padding:12px;background:#fff8e1;flex:1;min-width:140px;">
+<div style="font-weight:bold;text-align:center;">LINKAGE EDITOR</div>
+<div style="font-size:0.9em;margin-top:8px;">
+Uses ESD to: Match BAR, assign addresses, resolve refs<br>
+Produces: Single executable, all refs resolved
+</div>
+</div>
+<div style="border:2px solid #2e7d32;padding:12px;background:#e8f5e9;flex:1;min-width:140px;">
+<div style="font-weight:bold;text-align:center;">LOADER</div>
+<div style="font-size:0.9em;margin-top:8px;">
+Uses load module to: Copy code, relocate, start PC
+</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0;flex-wrap:wrap;">
+<span style="border:1px solid #616161;padding:8px 12px;background:#f5f5f5;">Object Module(s)</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #6a1b9a;padding:8px 12px;background:#f3e5f5;">Load Module</span>
+<span style="color:#616161;">→</span>
+<span style="border:1px solid #2e7d32;padding:8px 12px;background:#e8f5e9;">Program in Memory</span>
+</div>
 
 ### Example: Two Modules Linked Together
 
-```
-  MODULE A (main):                    MODULE B (subroutine):
-  +-------------------------+        +-------------------------+
-  |  ESD: MAIN (SD), CALL SUB(ER)     |  ESD: SUB (SD, LD)       |
-  |  TXT: BALR R14,R15  ; call SUB   |  TXT: ... code for SUB    |
-  |  RLD: "R15 = address of SUB"     |  RLD: (internal only)     |
-  +-------------------------+        +-------------------------+
-              |                                    |
-              +----------------+-------------------+
-                              |
-                              v
-  +-----------------------------------------------------------------+
-  |  LINKAGE EDITOR                                                 |
-  |  1. Sees A needs SUB (ER)                                       |
-  |  2. Sees B defines SUB (SD/LD)                                  |
-  |  3. Places B's code, computes SUB's address                     |
-  |  4. Uses RLD from A to put SUB's address into the call          |
-  +-----------------------------------------------------------------+
-                              |
-                              v
-  +-----------------------------------------------------------------+
-  |  LOAD MODULE: One contiguous program with MAIN and SUB, fixed   |
-  +-----------------------------------------------------------------+
-```
+<div style="display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;">
+<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
+<div style="font-weight:bold;">MODULE A (main)</div>
+<div style="font-size:0.9em;margin-top:8px;">
+ESD: MAIN (SD), CALL SUB (ER)<br>
+TXT: BALR R14,R15 ; call SUB<br>
+RLD: "R15 = address of SUB"
+</div>
+</div>
+<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
+<div style="font-weight:bold;">MODULE B (subroutine)</div>
+<div style="font-size:0.9em;margin-top:8px;">
+ESD: SUB (SD, LD)<br>
+TXT: ... code for SUB<br>
+RLD: (internal only)
+</div>
+</div>
+</div>
+<div style="text-align:center;margin:8px 0;">↓</div>
+<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
+<div style="font-weight:bold;">LINKAGE EDITOR</div>
+<ol style="margin:8px 0 0 0;">
+<li>Sees A needs SUB (ER)</li>
+<li>Sees B defines SUB (SD/LD)</li>
+<li>Places B's code, computes SUB's address</li>
+<li>Uses RLD from A to put SUB's address into the call</li>
+</ol>
+</div>
+<div style="text-align:center;margin:8px 0;">↓</div>
+<div style="border:2px solid #2e7d32;padding:12px;margin:12px 0;background:#e8f5e9;text-align:center;">
+<strong>LOAD MODULE:</strong> One contiguous program with MAIN and SUB, all refs fixed
+</div>
 
 ### Why This Design Was Smart in the 1970s
 
@@ -294,15 +302,21 @@ flowchart TB
 
 ## Summary
 
-```
-  SOURCE          ASSEMBLER              LINKAGE EDITOR           LOADER
-  ------          ---------              ---------------          ------
-
-  .asm     -->  ESD + TXT + RLD    -->   Load Module      -->   Running
-  files         (object deck)            (resolved)               Program
-                    |                         |                        |
-                    |                         |                        |
-              "What & where"            "Combine & fix"           "Load & go"
-```
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0;padding:16px;background:#fafafa;border:1px solid #ddd;">
+<span style="border:1px solid #1565c0;padding:10px 16px;background:#e3f2fd;"><strong>SOURCE</strong><br><small>.asm files</small></span>
+<span style="color:#616161;font-size:1.2em;">→</span>
+<span style="border:1px solid #e65100;padding:10px 16px;background:#fff8e1;"><strong>ASSEMBLER</strong><br><small>ESD + TXT + RLD</small></span>
+<span style="color:#616161;font-size:1.2em;">→</span>
+<span style="border:1px solid #e65100;padding:10px 16px;background:#fff8e1;"><strong>LINKAGE EDITOR</strong><br><small>Load Module</small></span>
+<span style="color:#616161;font-size:1.2em;">→</span>
+<span style="border:1px solid #2e7d32;padding:10px 16px;background:#e8f5e9;"><strong>LOADER</strong><br><small>Running Program</small></span>
+</div>
+<div style="display:flex;justify-content:center;gap:8px;margin:8px 0;font-size:0.9em;color:#616161;">
+<span>"What & where"</span>
+<span>|</span>
+<span>"Combine & fix"</span>
+<span>|</span>
+<span>"Load & go"</span>
+</div>
 
 The assembler produces **relocatable** output (ESD + TXT + RLD). The linkage editor **resolves** it into a load module. The loader **places** it in memory and **starts** it. Each stage uses the previous one's output and adds the next layer of binding.
