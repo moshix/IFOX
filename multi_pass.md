@@ -21,7 +21,7 @@ A guide for non-mainframe experts: passes, ESD, RLD, and the assembly-to-executi
 ```mermaid
 flowchart LR
     subgraph Assembly[" "]
-        A[SOURCE PROGRAM<br>.asm files]
+        A[SOURCE PROGRAM<br>cards or dataset]
     end
     subgraph Link[" "]
         B[RELOCATABLE OBJECT<br>ESD + TXT + RLD]
@@ -44,6 +44,8 @@ flowchart LR
 ```
 
 **Pipeline:** <span style="color:#1565c0">Source</span> → <span style="color:#e65100">Object (ESD+TXT+RLD)</span> → <span style="color:#6a1b9a">Load Module</span> → <span style="color:#2e7d32">Running Program</span>
+
+<small>Note: On S/370, source files have no special extension — the system uses DD names (SYSIN, SYSLIB) and dataset names, not file extensions like .asm.</small>
 
 ---
 
@@ -98,86 +100,131 @@ The assembler writes a **relocatable object module**: machine code plus metadata
 
 ### Object Module Structure (80-byte card format)
 
-<div style="border:1px solid #616161;padding:8px;margin:12px 0;background:#fafafa;">
-<div style="text-align:center;font-weight:bold;">OBJECT MODULE = sequence of 80-byte records (like punched cards)</div>
+<p style="margin-bottom:16px;">The object module is a <strong>sequence of 80-byte records</strong> — like a deck of punched cards, read top to bottom. Each record type has a specific role:</p>
+
+<div style="max-width:560px;margin:0 auto 24px auto;position:relative;">
+  <!-- Card 1: ESD -->
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:1.1em;margin-bottom:6px;">ESD</div>
+    <div style="font-size:0.85em;color:#5d4037;">External Symbol Dictionary — <em>must come first</em></div>
+    <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.9em;">
+      Who is defined here? What do we need from elsewhere?<br>
+      <span style="font-family:monospace;font-size:0.85em;">SD</span> Section &nbsp; <span style="font-family:monospace;font-size:0.85em;">LD</span> Label &nbsp; <span style="font-family:monospace;font-size:0.85em;">ER</span> External Ref &nbsp; <span style="font-family:monospace;font-size:0.85em;">PR</span> Pseudo-Register
+    </div>
+  </div>
+  <!-- Connector -->
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <!-- Card 2: TXT -->
+  <div style="border-left:4px solid #6a1b9a;background:linear-gradient(135deg,#f3e5f5 0%,#e1bee7 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#4a148c;font-size:1.1em;margin-bottom:6px;">TXT</div>
+    <div style="font-size:0.85em;color:#5d4037;">Machine code and data</div>
+    <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.9em;">
+      Actual bytes to load. Addresses are <strong>relative</strong> (not final).
+    </div>
+  </div>
+  <!-- Connector -->
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <!-- Card 3: RLD -->
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:1.1em;margin-bottom:6px;">RLD</div>
+    <div style="font-size:0.85em;color:#5d4037;">Relocation &amp; Linkage Dictionary</div>
+    <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.9em;">
+      "At offset X in section Y, put the address of symbol Z"
+    </div>
+  </div>
+  <!-- Connector -->
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <!-- Card 4: END -->
+  <div style="border-left:4px solid #616161;background:linear-gradient(135deg,#f5f5f5 0%,#eeeeee 100%);padding:12px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#424242;font-size:1em;">END</div>
+    <div style="font-size:0.85em;color:#616161;">End of module</div>
+  </div>
 </div>
 
-<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
-<div style="font-weight:bold;margin-bottom:8px;">ESD (External Symbol Dictionary) — MUST COME FIRST</div>
-<div style="border:1px solid #e65100;padding:10px;margin:8px 0;background:#fff;">
-Who is defined here? What do we need from elsewhere?<br>
-SD=Section, LD=Label/Entry, ER=External Ref, PR=Pseudo-Register
-</div>
-</div>
-<div style="text-align:center;margin:4px 0;">↓</div>
-
-<div style="border:2px solid #6a1b9a;padding:12px;margin:12px 0;background:#f3e5f5;">
-<div style="font-weight:bold;margin-bottom:8px;">TXT (Text) — Machine code and data</div>
-<div style="border:1px solid #6a1b9a;padding:10px;margin:8px 0;background:#fff;">
-Actual bytes to load. Addresses are RELATIVE (not final).
-</div>
-</div>
-<div style="text-align:center;margin:4px 0;">↓</div>
-
-<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
-<div style="font-weight:bold;margin-bottom:8px;">RLD (Relocation & Linkage Dictionary) — Where to fix addresses</div>
-<div style="border:1px solid #e65100;padding:10px;margin:8px 0;background:#fff;">
-"At offset X in section Y, put the address of symbol Z"
-</div>
-</div>
-<div style="text-align:center;margin:4px 0;">↓</div>
-
-<div style="border:1px solid #616161;padding:8px;margin:12px 0;background:#f5f5f5;text-align:center;">
-<strong>END</strong> — End of module
+<div style="text-align:center;margin-top:8px;font-size:0.85em;color:#757575;">
+  <svg width="120" height="24" viewBox="0 0 120 24" style="vertical-align:middle;margin-right:4px;">
+    <rect x="0" y="4" width="80" height="16" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="1" rx="2"/>
+    <line x1="10" y1="8" x2="70" y2="8" stroke="#9e9e9e" stroke-width="0.5"/>
+    <line x1="10" y1="12" x2="70" y2="12" stroke="#9e9e9e" stroke-width="0.5"/>
+    <line x1="10" y1="16" x2="70" y2="16" stroke="#9e9e9e" stroke-width="0.5"/>
+    <text x="40" y="22" font-size="6" fill="#616161" text-anchor="middle">80 bytes</text>
+  </svg>
+  Each record = one 80-byte card
 </div>
 
 ### ESD: The "Phone Book" of Symbols
 
-<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
-<div style="font-weight:bold;">ESD = External Symbol Dictionary</div>
-<div style="margin-bottom:12px;">Answers: "What symbols does this module define? What does it need?"</div>
-<table style="width:100%;border-collapse:collapse;">
-<tr style="background:#e65100;color:white;"><th style="padding:8px;text-align:left;">TYPE</th><th style="padding:8px;text-align:left;">MEANING</th><th style="padding:8px;text-align:left;">EXAMPLE</th></tr>
-<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">SD</td><td style="padding:8px;">Section Definition</td><td style="padding:8px;">"MYCODE" is a 100-byte code section</td></tr>
-<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">LD</td><td style="padding:8px;">Label Definition</td><td style="padding:8px;">"START" is an entry point at offset 0</td></tr>
-<tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;">ER</td><td style="padding:8px;">External Reference</td><td style="padding:8px;">"PRINT" is defined somewhere else</td></tr>
-<tr><td style="padding:8px;">PR</td><td style="padding:8px;">Pseudo-Register (XD)</td><td style="padding:8px;">"BUF" is a dummy section for addressing</td></tr>
-</table>
+<div style="max-width:560px;margin:0 auto 24px auto;">
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:1.1em;margin-bottom:6px;">ESD = External Symbol Dictionary</div>
+    <div style="font-size:0.9em;color:#5d4037;margin-bottom:12px;">Answers: "What symbols does this module define? What does it need?"</div>
+    <table style="width:100%;border-collapse:collapse;background:rgba(255,255,255,0.7);border-radius:4px;overflow:hidden;">
+      <tr style="background:#e65100;color:white;"><th style="padding:10px;text-align:left;">TYPE</th><th style="padding:10px;text-align:left;">MEANING</th><th style="padding:10px;text-align:left;">EXAMPLE</th></tr>
+      <tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">SD</td><td style="padding:10px;">Section Definition</td><td style="padding:10px;">"MYCODE" is a 100-byte code section</td></tr>
+      <tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">LD</td><td style="padding:10px;">Label Definition</td><td style="padding:10px;">"START" is an entry point at offset 0</td></tr>
+      <tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">ER</td><td style="padding:10px;">External Reference</td><td style="padding:10px;">"PRINT" is defined somewhere else</td></tr>
+      <tr><td style="padding:10px;">PR</td><td style="padding:10px;">Pseudo-Register (XD)</td><td style="padding:10px;">"BUF" is a dummy section for addressing</td></tr>
+    </table>
+  </div>
 </div>
 
 ### RLD: The "Fix-Up List"
 
 The assembler does **not** know final addresses. It emits **placeholders** and records where they are:
 
-<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
-<div style="font-weight:bold;">RLD = Relocation & Linkage Dictionary</div>
-<div style="margin-bottom:12px;">Each RLD entry says: "At this location, put the address of that symbol"</div>
-<div style="font-family:monospace;margin:8px 0;">Source: &nbsp;&nbsp;&nbsp;E &nbsp;&nbsp;DC &nbsp;&nbsp;A(EXTERNAL+4) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Address constant, value unknown</div>
-<div style="text-align:center;margin:4px 0;">↓</div>
-<div style="font-family:monospace;margin:8px 0;">RLD entry: R=EXTERNAL's ESDID, P=this section, Address=offset, Length=4, Type=A</div>
-<div style="margin-top:12px;padding:8px;background:#fff;border:1px solid #e65100;">
-<strong>When the LINKAGE EDITOR runs:</strong>
-<ol style="margin:4px 0 0 0;">
-<li>It knows where EXTERNAL ended up (from ESD of another module)</li>
-<li>It finds the TXT byte at the given offset</li>
-<li>It REPLACES the placeholder with the real address</li>
-</ol>
-</div>
+<div style="max-width:560px;margin:0 auto 24px auto;position:relative;">
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:1.1em;margin-bottom:6px;">RLD = Relocation &amp; Linkage Dictionary</div>
+    <div style="font-size:0.9em;color:#5d4037;margin-bottom:12px;">Each RLD entry says: "At this location, put the address of that symbol"</div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #6a1b9a;background:linear-gradient(135deg,#f3e5f5 0%,#e1bee7 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#4a148c;font-size:0.95em;margin-bottom:8px;">Source</div>
+    <div style="font-family:monospace;padding:10px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.9em;">
+      E &nbsp;&nbsp;DC &nbsp;&nbsp;A(EXTERNAL+4)
+    </div>
+    <div style="font-size:0.85em;color:#5d4037;margin-top:8px;">Address constant — value unknown at assembly time</div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:0.95em;margin-bottom:8px;">RLD entry</div>
+    <div style="font-family:monospace;padding:10px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.85em;">
+      R=EXTERNAL's ESDID, P=this section, Address=offset, Length=4, Type=A
+    </div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#1b5e20;font-size:0.95em;margin-bottom:8px;">When the LINKAGE EDITOR runs</div>
+    <ol style="margin:8px 0 0 0;padding-left:20px;">
+      <li style="margin-bottom:4px;">It knows where EXTERNAL ended up (from ESD of another module)</li>
+      <li style="margin-bottom:4px;">It finds the TXT byte at the given offset</li>
+      <li>It <strong>REPLACES</strong> the placeholder with the real address</li>
+    </ol>
+  </div>
 </div>
 
 ### How RLD Adjusts Displacements
 
-<div style="display:flex;flex-wrap:wrap;gap:24px;margin:12px 0;">
-<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
-<div style="font-weight:bold;margin-bottom:8px;">BEFORE LINK (in object module)</div>
-<div style="font-family:monospace;">TXT: [instruction] [????] [instruction] ...</div>
-<div style="font-size:0.9em;margin-top:8px;">↑ placeholder (e.g. 0 or relative value)<br>RLD says: "Put address of FOO here"</div>
-</div>
-<div style="flex:1;min-width:200px;border:2px solid #2e7d32;padding:12px;background:#e8f5e9;">
-<div style="font-weight:bold;margin-bottom:8px;">AFTER LINK (linkage editor applies RLD)</div>
-<div style="font-family:monospace;">TXT: [instruction] [0x00012345] [instruction] ...</div>
-<div style="font-size:0.9em;margin-top:8px;">↑ real address where FOO was placed</div>
-</div>
+<div style="max-width:560px;margin:0 auto 24px auto;position:relative;">
+  <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#0d47a1;font-size:1em;margin-bottom:8px;">BEFORE LINK</div>
+    <div style="font-size:0.85em;color:#5d4037;margin-bottom:8px;">In the object module — placeholder in TXT</div>
+    <div style="font-family:monospace;padding:12px;background:rgba(255,255,255,0.8);border-radius:4px;font-size:0.9em;letter-spacing:1px;">
+      [instruction] <span style="background:#ffcdd2;padding:2px 6px;border-radius:2px;">????</span> [instruction] ...
+    </div>
+    <div style="font-size:0.85em;color:#5d4037;margin-top:8px;">RLD says: "Put address of FOO here"</div>
+  </div>
+  <div style="height:28px;border-left:2px dashed #9e9e9e;margin-left:20px;position:relative;">
+    <span style="position:absolute;left:28px;top:4px;font-size:0.8em;color:#757575;">linkage editor applies RLD</span>
+  </div>
+  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#1b5e20;font-size:1em;margin-bottom:8px;">AFTER LINK</div>
+    <div style="font-size:0.85em;color:#5d4037;margin-bottom:8px;">Placeholder replaced with real address</div>
+    <div style="font-family:monospace;padding:12px;background:rgba(255,255,255,0.8);border-radius:4px;font-size:0.9em;letter-spacing:1px;">
+      [instruction] <span style="background:#c8e6c9;padding:2px 6px;border-radius:2px;">0x00012345</span> [instruction] ...
+    </div>
+    <div style="font-size:0.85em;color:#5d4037;margin-top:8px;">Real address where FOO was placed by the linkage editor</div>
+  </div>
 </div>
 
 ---
@@ -222,70 +269,156 @@ flowchart TB
 
 ### How They Use Each Other's Output
 
-<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin:12px 0;align-items:flex-start;">
-<div style="border:2px solid #1565c0;padding:12px;background:#e3f2fd;flex:1;min-width:140px;">
-<div style="font-weight:bold;text-align:center;">ASSEMBLER</div>
-<div style="font-size:0.9em;margin-top:8px;">
-ESD: "I define FOO, I need BAR"<br>
-TXT: code + placeholders<br>
-RLD: "fix offset 12 with address of BAR"
-</div>
-</div>
-<div style="border:2px solid #e65100;padding:12px;background:#fff8e1;flex:1;min-width:140px;">
-<div style="font-weight:bold;text-align:center;">LINKAGE EDITOR</div>
-<div style="font-size:0.9em;margin-top:8px;">
-Uses ESD to: Match BAR, assign addresses, resolve refs<br>
-Produces: Single executable, all refs resolved
-</div>
-</div>
-<div style="border:2px solid #2e7d32;padding:12px;background:#e8f5e9;flex:1;min-width:140px;">
-<div style="font-weight:bold;text-align:center;">LOADER</div>
-<div style="font-size:0.9em;margin-top:8px;">
-Uses load module to: Copy code, relocate, start PC
-</div>
-</div>
-</div>
-<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0;flex-wrap:wrap;">
-<span style="border:1px solid #616161;padding:8px 12px;background:#f5f5f5;">Object Module(s)</span>
-<span style="color:#616161;">→</span>
-<span style="border:1px solid #6a1b9a;padding:8px 12px;background:#f3e5f5;">Load Module</span>
-<span style="color:#616161;">→</span>
-<span style="border:1px solid #2e7d32;padding:8px 12px;background:#e8f5e9;">Program in Memory</span>
+<div style="max-width:560px;margin:0 auto 32px auto;">
+  <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#0d47a1;margin-bottom:10px;font-size:1.1em;">1. ASSEMBLER</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Input:</strong> Source deck (cards or dataset)</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Produces:</strong></div>
+    <ul style="margin:0 0 8px 0;padding-left:20px;font-size:0.9em;">
+      <li><strong>ESD</strong> — defines symbols, lists external refs</li>
+      <li><strong>TXT</strong> — machine code with placeholders</li>
+      <li><strong>RLD</strong> — where each placeholder goes</li>
+    </ul>
+    <div style="font-size:0.85em;color:#5d4037;">Output: Object module</div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;margin-bottom:10px;font-size:1.1em;">2. LINKAGE EDITOR</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Input:</strong> Object module(s)</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Uses ESD to:</strong></div>
+    <ul style="margin:0 0 8px 0;padding-left:20px;font-size:0.9em;">
+      <li>Match external refs to definitions</li>
+      <li>Assign final addresses</li>
+      <li>Apply RLD — fill placeholders</li>
+    </ul>
+    <div style="font-size:0.85em;color:#5d4037;">Output: Load module</div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#1b5e20;margin-bottom:10px;font-size:1.1em;">3. LOADER</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Input:</strong> Load module</div>
+    <div style="font-size:0.9em;margin-bottom:8px;"><strong>Does:</strong></div>
+    <ul style="margin:0 0 8px 0;padding-left:20px;font-size:0.9em;">
+      <li>Allocates memory</li>
+      <li>Copies code, relocates if needed</li>
+      <li>Starts program at entry point</li>
+    </ul>
+    <div style="font-size:0.85em;color:#5d4037;">Output: Running program</div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px;padding:12px;background:#fafafa;border-radius:8px;">
+    <span style="font-size:0.9em;color:#616161;">Data flow:</span>
+    <span style="border:1px solid #616161;padding:6px 10px;background:#fff;border-radius:4px;font-size:0.9em;">Object Module(s)</span>
+    <span style="color:#9e9e9e;">→</span>
+    <span style="border:1px solid #6a1b9a;padding:6px 10px;background:#f3e5f5;border-radius:4px;font-size:0.9em;">Load Module</span>
+    <span style="color:#9e9e9e;">→</span>
+    <span style="border:1px solid #2e7d32;padding:6px 10px;background:#e8f5e9;border-radius:4px;font-size:0.9em;">Program in Memory</span>
+  </div>
 </div>
 
-### Example: Two Modules Linked Together
+### Concrete Example: S/370 Program and Object Module Construction
 
-<div style="display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;">
-<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
-<div style="font-weight:bold;">MODULE A (main)</div>
-<div style="font-size:0.9em;margin-top:8px;">
-ESD: MAIN (SD), CALL SUB (ER)<br>
-TXT: BALR R14,R15 ; call SUB<br>
-RLD: "R15 = address of SUB"
+Here is a minimal S/370 program split into two modules. Source is typically on punched cards or in a dataset — **file extensions have no meaning** on S/370; the system uses DD names (SYSIN, SYSLIB) and member names.
+
+<div style="max-width:640px;margin:0 auto 24px auto;">
+  <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#0d47a1;margin-bottom:8px;">Source deck 1 — MAIN (calls SUB)</div>
+    <pre style="margin:0;font-size:0.85em;background:rgba(255,255,255,0.8);padding:12px;border-radius:4px;overflow-x:auto;">MAIN     CSECT
+         EXTRN SUB
+         STM   14,12,12(13)
+         LR    12,15
+         USING MAIN,12
+         L     15,=A(SUB)
+         BALR  14,15
+         LM    14,12,12(13)
+         BR    14
+         LTORG
+         END   MAIN</pre>
+  </div>
+  <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#0d47a1;margin-bottom:8px;">Source deck 2 — SUB (subroutine)</div>
+    <pre style="margin:0;font-size:0.85em;background:rgba(255,255,255,0.8);padding:12px;border-radius:4px;overflow-x:auto;">SUB      CSECT
+         ENTRY SUB
+         BR    14
+         END   SUB</pre>
+  </div>
 </div>
+
+**Step 1 — Assembler produces object for MAIN:**
+
+<div style="max-width:640px;margin:0 auto 24px auto;">
+  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>ESD for MAIN:</strong> SD MAIN (section), ER SUB (external ref — "I need SUB")
+  </div>
+  <div style="border-left:4px solid #6a1b9a;background:#f3e5f5;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>TXT for MAIN:</strong> STM, LR, L, BALR, LM, BR — but <code>L 15,=A(SUB)</code> has a <strong>placeholder</strong> (SUB's address unknown)
+  </div>
+  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>RLD for MAIN:</strong> "At offset of =A(SUB), put address of SUB when known"
+  </div>
 </div>
-<div style="flex:1;min-width:200px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;">
-<div style="font-weight:bold;">MODULE B (subroutine)</div>
-<div style="font-size:0.9em;margin-top:8px;">
-ESD: SUB (SD, LD)<br>
-TXT: ... code for SUB<br>
-RLD: (internal only)
+
+**Step 2 — Assembler produces object for SUB:**
+
+<div style="max-width:640px;margin:0 auto 24px auto;">
+  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>ESD for SUB:</strong> SD SUB (section), LD SUB (entry point)
+  </div>
+  <div style="border-left:4px solid #6a1b9a;background:#f3e5f5;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>TXT for SUB:</strong> BR 14 — no placeholders
+  </div>
+  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
+    <strong>RLD for SUB:</strong> (none — no address constants)
+  </div>
 </div>
+
+**Step 3 — Linkage editor combines and resolves:**
+
+<div style="max-width:640px;margin:0 auto 24px auto;">
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;margin-bottom:10px;">LINKAGE EDITOR</div>
+    <ol style="margin:0;padding-left:20px;font-size:0.95em;">
+      <li>Matches MAIN's ER SUB with SUB's SD/LD</li>
+      <li>Places MAIN and SUB in load module, computes SUB's address</li>
+      <li>Uses RLD from MAIN to replace the placeholder with SUB's real address</li>
+    </ol>
+  </div>
+  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#1b5e20;">LOAD MODULE</div>
+    <div style="font-size:0.9em;margin-top:6px;">One executable: MAIN + SUB, all refs resolved. Loader copies it into memory and starts at MAIN.</div>
+  </div>
 </div>
-</div>
-<div style="text-align:center;margin:8px 0;">↓</div>
-<div style="border:2px solid #e65100;padding:12px;margin:12px 0;background:#fff8e1;">
-<div style="font-weight:bold;">LINKAGE EDITOR</div>
-<ol style="margin:8px 0 0 0;">
-<li>Sees A needs SUB (ER)</li>
-<li>Sees B defines SUB (SD/LD)</li>
-<li>Places B's code, computes SUB's address</li>
-<li>Uses RLD from A to put SUB's address into the call</li>
-</ol>
-</div>
-<div style="text-align:center;margin:8px 0;">↓</div>
-<div style="border:2px solid #2e7d32;padding:12px;margin:12px 0;background:#e8f5e9;text-align:center;">
-<strong>LOAD MODULE:</strong> One contiguous program with MAIN and SUB, all refs fixed
+
+### Two Modules — Visual Summary
+
+<div style="max-width:640px;margin:0 auto 24px auto;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;border-radius:0 8px 8px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="font-weight:bold;color:#0d47a1;margin-bottom:10px;">MAIN (object)</div>
+      <div style="font-size:0.9em;">
+        <strong>ESD:</strong> SD MAIN, ER SUB<br>
+        <strong>TXT:</strong> code + placeholder for SUB<br>
+        <strong>RLD:</strong> fix =A(SUB) with SUB's address
+      </div>
+    </div>
+    <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;border-radius:0 8px 8px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="font-weight:bold;color:#0d47a1;margin-bottom:10px;">SUB (object)</div>
+      <div style="font-size:0.9em;">
+        <strong>ESD:</strong> SD SUB, LD SUB<br>
+        <strong>TXT:</strong> BR 14<br>
+        <strong>RLD:</strong> none
+      </div>
+    </div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#bf360c;margin-bottom:8px;">LINKAGE EDITOR</div>
+    <div style="font-size:0.9em;">Matches ER SUB ↔ SD SUB, places both, applies RLD to fix MAIN's call</div>
+  </div>
+  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
+    <div style="font-weight:bold;color:#1b5e20;">LOAD MODULE</div>
+    <div style="font-size:0.9em;margin-top:6px;">MAIN + SUB in one executable, all refs fixed</div>
+  </div>
 </div>
 
 ### Why This Design Was Smart in the 1970s
@@ -302,21 +435,21 @@ RLD: (internal only)
 
 ## Summary
 
-<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0;padding:16px;background:#fafafa;border:1px solid #ddd;">
-<span style="border:1px solid #1565c0;padding:10px 16px;background:#e3f2fd;"><strong>SOURCE</strong><br><small>.asm files</small></span>
-<span style="color:#616161;font-size:1.2em;">→</span>
-<span style="border:1px solid #e65100;padding:10px 16px;background:#fff8e1;"><strong>ASSEMBLER</strong><br><small>ESD + TXT + RLD</small></span>
-<span style="color:#616161;font-size:1.2em;">→</span>
-<span style="border:1px solid #e65100;padding:10px 16px;background:#fff8e1;"><strong>LINKAGE EDITOR</strong><br><small>Load Module</small></span>
-<span style="color:#616161;font-size:1.2em;">→</span>
-<span style="border:1px solid #2e7d32;padding:10px 16px;background:#e8f5e9;"><strong>LOADER</strong><br><small>Running Program</small></span>
-</div>
-<div style="display:flex;justify-content:center;gap:8px;margin:8px 0;font-size:0.9em;color:#616161;">
-<span>"What & where"</span>
-<span>|</span>
-<span>"Combine & fix"</span>
-<span>|</span>
-<span>"Load & go"</span>
+<div style="max-width:560px;margin:0 auto 24px auto;">
+  <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin:16px 0;">
+    <div style="border-left:4px solid #1565c0;padding:12px 16px;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);border-radius:0 6px 6px 0;box-shadow:0 2px 6px rgba(0,0,0,0.06);"><strong>SOURCE</strong><br><small>cards / dataset</small></div>
+    <div style="width:20px;height:2px;background:#9e9e9e;flex-shrink:0;"></div>
+    <div style="border-left:4px solid #e65100;padding:12px 16px;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);border-radius:0 6px 6px 0;box-shadow:0 2px 6px rgba(0,0,0,0.06);"><strong>ASSEMBLER</strong><br><small>ESD + TXT + RLD</small></div>
+    <div style="width:20px;height:2px;background:#9e9e9e;flex-shrink:0;"></div>
+    <div style="border-left:4px solid #e65100;padding:12px 16px;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);border-radius:0 6px 6px 0;box-shadow:0 2px 6px rgba(0,0,0,0.06);"><strong>LINKAGE EDITOR</strong><br><small>Load Module</small></div>
+    <div style="width:20px;height:2px;background:#9e9e9e;flex-shrink:0;"></div>
+    <div style="border-left:4px solid #2e7d32;padding:12px 16px;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);border-radius:0 6px 6px 0;box-shadow:0 2px 6px rgba(0,0,0,0.06);"><strong>LOADER</strong><br><small>Running Program</small></div>
+  </div>
+  <div style="display:flex;justify-content:center;gap:16px;margin:12px 0;font-size:0.9em;color:#616161;flex-wrap:wrap;">
+    <span>"What &amp; where"</span>
+    <span>"Combine &amp; fix"</span>
+    <span>"Load &amp; go"</span>
+  </div>
 </div>
 
 The assembler produces **relocatable** output (ESD + TXT + RLD). The linkage editor **resolves** it into a load module. The loader **places** it in memory and **starts** it. Each stage uses the previous one's output and adds the next layer of binding.
