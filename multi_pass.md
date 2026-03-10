@@ -343,81 +343,122 @@ Here is a minimal S/370 program split into two modules. Source is typically on p
   </div>
 </div>
 
-**Step 1 — Assembler produces object for MAIN:**
-
-<div style="max-width:640px;margin:0 auto 24px auto;">
-  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>ESD for MAIN:</strong> SD MAIN (section), ER SUB (external ref — "I need SUB")
+<div style="max-width:640px;margin:0 auto 32px auto;">
+  <div style="font-weight:bold;color:#0d47a1;margin-bottom:12px;font-size:1.1em;">Step 1 — Assembler produces object for MAIN</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="border:2px solid #1565c0;padding:12px 16px;background:#e3f2fd;border-radius:8px;">MAIN source</div>
+    <div style="font-size:1.2em;color:#9e9e9e;">→</div>
+    <div style="border:2px solid #2e7d32;padding:12px 16px;background:#e8f5e9;border-radius:8px;">Assembler</div>
   </div>
-  <div style="border-left:4px solid #6a1b9a;background:#f3e5f5;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>TXT for MAIN:</strong> STM, LR, L, BALR, LM, BR — but <code>L 15,=A(SUB)</code> has a <strong>placeholder</strong> (SUB's address unknown)
+  <div style="font-size:0.9em;color:#616161;margin-bottom:8px;">Object module structure:</div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:0.95em;">ESD</div>
+    <div style="font-size:0.9em;margin-top:4px;">SD MAIN (section) · ER SUB ("I need SUB")</div>
   </div>
-  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>RLD for MAIN:</strong> "At offset of =A(SUB), put address of SUB when known"
+  <div style="height:12px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #6a1b9a;background:linear-gradient(135deg,#f3e5f5 0%,#e1bee7 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#4a148c;font-size:0.95em;">TXT</div>
+    <div style="font-size:0.9em;margin-top:4px;">STM, LR, L, BALR, LM, BR</div>
+    <div style="margin-top:6px;padding:6px 8px;background:rgba(255,255,255,0.7);border-radius:4px;font-size:0.85em;">L 15,=A(SUB) → <span style="background:#ffcdd2;padding:2px 4px;">placeholder</span> (SUB unknown)</div>
   </div>
-</div>
-
-**Step 2 — Assembler produces object for SUB:**
-
-<div style="max-width:640px;margin:0 auto 24px auto;">
-  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>ESD for SUB:</strong> SD SUB (section), LD SUB (entry point)
-  </div>
-  <div style="border-left:4px solid #6a1b9a;background:#f3e5f5;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>TXT for SUB:</strong> BR 14 — no placeholders
-  </div>
-  <div style="border-left:4px solid #e65100;background:#fff8e1;padding:12px;margin-bottom:8px;border-radius:0 6px 6px 0;">
-    <strong>RLD for SUB:</strong> (none — no address constants)
+  <div style="height:12px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:0.95em;">RLD</div>
+    <div style="font-size:0.9em;margin-top:4px;">At offset of =A(SUB) → put SUB's address when known</div>
   </div>
 </div>
 
-**Step 3 — Linkage editor combines and resolves:**
+<div style="max-width:640px;margin:0 auto 32px auto;">
+  <div style="font-weight:bold;color:#0d47a1;margin-bottom:12px;font-size:1.1em;">Step 2 — Assembler produces object for SUB</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="border:2px solid #1565c0;padding:12px 16px;background:#e3f2fd;border-radius:8px;">SUB source</div>
+    <div style="font-size:1.2em;color:#9e9e9e;">→</div>
+    <div style="border:2px solid #2e7d32;padding:12px 16px;background:#e8f5e9;border-radius:8px;">Assembler</div>
+  </div>
+  <div style="font-size:0.9em;color:#616161;margin-bottom:8px;">Object module structure:</div>
+  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#bf360c;font-size:0.95em;">ESD</div>
+    <div style="font-size:0.9em;margin-top:4px;">SD SUB (section) · LD SUB (entry point)</div>
+  </div>
+  <div style="height:12px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #6a1b9a;background:linear-gradient(135deg,#f3e5f5 0%,#e1bee7 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#4a148c;font-size:0.95em;">TXT</div>
+    <div style="font-size:0.9em;margin-top:4px;">BR 14 — no placeholders</div>
+  </div>
+  <div style="height:12px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
+  <div style="border-left:4px solid #9e9e9e;background:linear-gradient(135deg,#f5f5f5 0%,#eeeeee 100%);padding:14px;margin-bottom:0;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-radius:0 6px 6px 0;">
+    <div style="font-weight:bold;color:#616161;font-size:0.95em;">RLD</div>
+    <div style="font-size:0.9em;margin-top:4px;color:#757575;">(none — no address constants)</div>
+  </div>
+</div>
 
-<div style="max-width:640px;margin:0 auto 24px auto;">
+<div style="max-width:640px;margin:0 auto 32px auto;">
+  <div style="font-weight:bold;color:#bf360c;margin-bottom:12px;font-size:1.1em;">Step 3 — Linkage editor combines and resolves</div>
+  <div style="display:flex;align-items:stretch;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:120px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;border-radius:8px;text-align:center;">
+      <div style="font-size:0.8em;color:#616161;margin-bottom:4px;">Input</div>
+      <div style="font-weight:bold;">MAIN object</div>
+      <div style="font-size:0.8em;margin-top:4px;">ER SUB</div>
+    </div>
+    <div style="flex:1;min-width:120px;border:2px solid #1565c0;padding:12px;background:#e3f2fd;border-radius:8px;text-align:center;">
+      <div style="font-size:0.8em;color:#616161;margin-bottom:4px;">Input</div>
+      <div style="font-weight:bold;">SUB object</div>
+      <div style="font-size:0.8em;margin-top:4px;">SD SUB, LD SUB</div>
+    </div>
+  </div>
   <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
-    <div style="font-weight:bold;color:#bf360c;margin-bottom:10px;">LINKAGE EDITOR</div>
-    <ol style="margin:0;padding-left:20px;font-size:0.95em;">
-      <li>Matches MAIN's ER SUB with SUB's SD/LD</li>
-      <li>Places MAIN and SUB in load module, computes SUB's address</li>
-      <li>Uses RLD from MAIN to replace the placeholder with SUB's real address</li>
-    </ol>
+    <div style="font-weight:bold;color:#bf360c;margin-bottom:12px;">LINKAGE EDITOR</div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="padding:6px 10px;background:#ffecb3;border-radius:4px;font-size:0.9em;">1. Match</span>
+      <span style="font-size:0.9em;">ER SUB</span>
+      <span style="color:#e65100;font-weight:bold;">↔</span>
+      <span style="font-size:0.9em;">SD SUB</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="padding:6px 10px;background:#ffecb3;border-radius:4px;font-size:0.9em;">2. Place</span>
+      <span style="font-size:0.9em;">MAIN + SUB in load module, compute SUB's address</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span style="padding:6px 10px;background:#ffecb3;border-radius:4px;font-size:0.9em;">3. Apply RLD</span>
+      <span style="font-size:0.9em;">Replace placeholder in MAIN with SUB's real address</span>
+    </div>
   </div>
+  <div style="height:16px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
   <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
     <div style="font-weight:bold;color:#1b5e20;">LOAD MODULE</div>
-    <div style="font-size:0.9em;margin-top:6px;">One executable: MAIN + SUB, all refs resolved. Loader copies it into memory and starts at MAIN.</div>
+    <div style="font-size:0.9em;margin-top:6px;">One executable: MAIN + SUB, all refs resolved. Loader copies into memory and starts at MAIN.</div>
   </div>
 </div>
 
 ### Two Modules — Visual Summary
 
-<div style="max-width:640px;margin:0 auto 24px auto;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-    <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;border-radius:0 8px 8px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="font-weight:bold;color:#0d47a1;margin-bottom:10px;">MAIN (object)</div>
-      <div style="font-size:0.9em;">
-        <strong>ESD:</strong> SD MAIN, ER SUB<br>
-        <strong>TXT:</strong> code + placeholder for SUB<br>
-        <strong>RLD:</strong> fix =A(SUB) with SUB's address
+<div style="max-width:640px;margin:0 auto 32px auto;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+    <div style="border:2px solid #1565c0;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="background:#1565c0;color:white;padding:8px 12px;font-weight:bold;text-align:center;">MAIN (object)</div>
+      <div style="padding:12px;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);">
+        <div style="border-left:3px solid #e65100;padding:8px 10px;margin-bottom:6px;background:#fff8e1;font-size:0.9em;"><strong>ESD</strong> SD MAIN, ER SUB</div>
+        <div style="border-left:3px solid #6a1b9a;padding:8px 10px;margin-bottom:6px;background:#f3e5f5;font-size:0.9em;"><strong>TXT</strong> code + <span style="background:#ffcdd2;padding:1px 3px;">placeholder</span></div>
+        <div style="border-left:3px solid #e65100;padding:8px 10px;background:#fff8e1;font-size:0.9em;"><strong>RLD</strong> fix =A(SUB)</div>
       </div>
     </div>
-    <div style="border-left:4px solid #1565c0;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:16px;border-radius:0 8px 8px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="font-weight:bold;color:#0d47a1;margin-bottom:10px;">SUB (object)</div>
-      <div style="font-size:0.9em;">
-        <strong>ESD:</strong> SD SUB, LD SUB<br>
-        <strong>TXT:</strong> BR 14<br>
-        <strong>RLD:</strong> none
+    <div style="border:2px solid #1565c0;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="background:#1565c0;color:white;padding:8px 12px;font-weight:bold;text-align:center;">SUB (object)</div>
+      <div style="padding:12px;background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);">
+        <div style="border-left:3px solid #e65100;padding:8px 10px;margin-bottom:6px;background:#fff8e1;font-size:0.9em;"><strong>ESD</strong> SD SUB, LD SUB</div>
+        <div style="border-left:3px solid #6a1b9a;padding:8px 10px;margin-bottom:6px;background:#f3e5f5;font-size:0.9em;"><strong>TXT</strong> BR 14</div>
+        <div style="border-left:3px solid #9e9e9e;padding:8px 10px;background:#f5f5f5;font-size:0.9em;color:#757575;"><strong>RLD</strong> none</div>
       </div>
     </div>
   </div>
-  <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
-  <div style="border-left:4px solid #e65100;background:linear-gradient(135deg,#fff8e1 0%,#ffecb3 100%);padding:16px;margin-bottom:0;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
-    <div style="font-weight:bold;color:#bf360c;margin-bottom:8px;">LINKAGE EDITOR</div>
-    <div style="font-size:0.9em;">Matches ER SUB ↔ SD SUB, places both, applies RLD to fix MAIN's call</div>
+  <div style="text-align:center;margin:12px 0;">
+    <div style="display:inline-block;padding:8px 20px;background:#e65100;color:white;border-radius:8px;font-weight:bold;">LINKAGE EDITOR</div>
+    <div style="font-size:0.9em;margin-top:8px;color:#5d4037;">ER SUB ↔ SD SUB · places both · applies RLD</div>
   </div>
   <div style="height:20px;border-left:2px dashed #9e9e9e;margin-left:20px;"></div>
-  <div style="border-left:4px solid #2e7d32;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:0 8px 8px 0;">
-    <div style="font-weight:bold;color:#1b5e20;">LOAD MODULE</div>
-    <div style="font-size:0.9em;margin-top:6px;">MAIN + SUB in one executable, all refs fixed</div>
+  <div style="border:2px solid #2e7d32;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <div style="background:#2e7d32;color:white;padding:10px 12px;font-weight:bold;text-align:center;">LOAD MODULE</div>
+    <div style="padding:12px;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);text-align:center;font-size:0.95em;">MAIN + SUB in one executable · all refs fixed</div>
   </div>
 </div>
 
